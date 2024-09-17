@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ToDo List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/listicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/footer.css') }}">
+</head>
+<body>
+
+<header>
+    <h1><img src="{{ url_for('static', filename='images/listicon.png') }}" alt="logo" width="80" height="60">ToDo List</h1>
+    {% if not current_user.is_authenticated %}
+    <form action="/" method="POST"> 
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your name">
+        <button type="submit"><i class="fa fa-sign-in"></i></button>
+    </form>
+    {% else %}
+    <p>Welcome, {{ current_user.username }}!</p>
+    <form action="/logout" method="POST">
+        <button type="submit"><i class="fa fa-sign-out"></i></button>
+    </form>
+    {% endif %}
+</header>
+{% if current_user.is_authenticated %}
+<form action="/add" method="POST">
+    <p>Add a new task:
+        <input type="text" name="task" placeholder="Enter a task">
+        <button type="submit"><i class="fa fa-plus-circle"></i></button>
+    </p>
+</form>
+
+<ul>
+    {% if todo_list %}
+        {% for task in todo_list %}
+        <li>
+            {% if task.done %}
+            <strike>{{ task.content }}</strike>
+            {% else %}
+            {{ task.content }}
+            {% endif %}
+            <form action="/delete/{{ task.id }}" method="POST" style="display:inline;">
+                <button type="submit"><i class="fa fa-trash-o"></i></button>
+            </form>
+            <form action="/mark_done/{{ task.id }}" method="POST" style="display:inline;">
+                <button type="submit">
+                    {% if task.done %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}
+                </button>
+            </form>
+        </li>
+        {% endfor %}
+    {% else %}
+        <li>No Tasks Yet</li>
+    {% endif %}
+</ul>
+{% endif %}
+<footer>
+    Saving goals in a list is a good thing
+</footer>
+
+</body>
+</html>

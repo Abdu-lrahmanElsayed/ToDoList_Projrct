@@ -1,0 +1,16 @@
+footer {
+	background-color: tomato;
+	color: black;
+	font-family: "Lucida Handwriting", cursive;
+	font-weight: bold;
+	font-size: 40px;
+	height: 60px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	bottom: 0;
+	border: 2px solid black;
+	border-radius: 20px;
+}
